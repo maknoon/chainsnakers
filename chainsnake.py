@@ -9,8 +9,11 @@ app = Flask(__name__)
 @app.route('/setup')
 def fetch():
     set_to_fetch = request.args.get('fetch')
-
-    return json.dumps({"message": "fetched the {} set!".format(set_to_fetch)},indent=2)
+    chaindb = chainsnakedb.ChainsDb()
+    response = chaindb.get_questions_given_keyword('cell barrier')
+    response["topic"] = set_to_fetch
+    response["description"] = "Animals and natural reproduction"
+    return json.dumps(response)
 
 @app.route('/hello/<u_name>')
 def address(u_name):

@@ -196,7 +196,7 @@ class ChainsDb(object):
             db.close()
             return {}
 
-        q_select_query = """SELECT CARD.C_QUESTION FROM CARD 
+        q_select_query = """SELECT CARD.C_QUESTION, CARD.C_ANSWER FROM CARD 
                              INNER JOIN C_KW_RELATIONSHIPS
                              ON CARD.C_ID = C_KW_RELATIONSHIPS.C_ID
                              INNER JOIN KEY_WORDS
@@ -215,13 +215,14 @@ class ChainsDb(object):
         i = 0
         array = []
         while i < len(questions):
-            array.append(questions[i][0])
+            temp = {"question":questions[i][0], "answer":questions[i][1]}
+            array.append(temp)
             i += 1
         
         # disconnect from server
         db.close()
 
-        return {"questions":array}
+        return {"results":array}
 
     def get_keyword_given_question(self, question):
         # Open database connection
@@ -274,10 +275,8 @@ chainsDb.insert_to_key_word("cell barrier")
 chainsDb.insert_to_key_word("woofers")
 chainsDb.insert_to_relationships("cell barrier", "SOLAR SYSTEMS", 0.22)
 chainsDb.insert_to_card("Who discovered America?", "I think it was christopher columbus")
-chainsDb.insert_to_card("How sexy are you?", "very very very sexy")
+chainsDb.insert_to_card("When was the french revolution?", "no idea")
 chainsDb.insert_to_c_kw("Who discovered America?", "cell barrier", 0.891)
-chainsDb.insert_to_c_kw("How sexy are you?", "cell barrier", 0.701)
+chainsDb.insert_to_c_kw("When was the french revolution?", "cell barrier", 0.701)
 chainsDb.insert_to_c_kw("Who discovered America?", "woofers", 0.791)
-#print chainsDb.get_questions_given_keyword("cell barrier")
-#print chainsDb.get_keyword_given_question("Who discovered America?")
 print "meow"
