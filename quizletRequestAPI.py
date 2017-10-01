@@ -113,7 +113,6 @@ def getQuizlet():
 # print get_oauth2_token()
 # print getQuizlet()
 
-
 # Quizlet OAuth2Session
 # quizlet = OAuth2Session(config.qclient_id, redirect_uri=config.qredirect_uri)
 
