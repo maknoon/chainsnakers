@@ -1,8 +1,7 @@
-#!~/usr/bin/python
+#!~/usr/bin/python3
 
 import pymysql as psql
 import config
-<<<<<<< 7f982c0e034d21a7474937900a4b62c4696e8eb1
 
 class ChainsDb(object):
 

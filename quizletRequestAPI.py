@@ -1,6 +1,7 @@
 #!~/usr/bin/python
 
 import config
+<<<<<<< f89f34fbb040bb36975f5ec6a5e1dbcee7e560d8
 import urllib2
 import json
 import requests
@@ -62,12 +63,19 @@ print "\n-----------\n"
 
 
 # --- OAuth --------------------------------------
+=======
+import json
+
+import requests
+# from requests_oauthlib import OAuth2Session
+>>>>>>> quizletAPI
 
 # Quizlet OAuth2 endpoints 
 auth_url = 'https://quizlet.com/authorize'
 # authorization_base_url = "https://quizlet.com/authorize?client_id=%s&response_type=code&scope=read\%20write_set" %(config.qclient_id)
 token_url = 'https://api.quizlet.com/oauth/token'
 
+<<<<<<< f89f34fbb040bb36975f5ec6a5e1dbcee7e560d8
 # # Quizlet auth code
 # # example url: "https://quizlet.com/authorize?response_type=code&client_id=%s&scope=read&state=string" %(config.qclient_id)
 # def get_code():
@@ -100,6 +108,39 @@ def getQuizlet():
 
     req_body = {'client_id': config.qclient_id,
                 'redirect_uri': config.qredirect_uri}
+=======
+# Quizlet auth code
+# example url: "https://quizlet.com/authorize?response_type=code&client_id=%s&scope=read&state=string" %(config.qclient_id)
+def get_code():
+    req_body = {'scope': 'read',
+                'client_id': config.qclient_id,
+                'response_type': 'code',
+                'state': 'STATE',
+                'redirect_uri': config.qredirect_uri,
+    }
+    res = requests.get(auth_url, data=req_body)
+    return res.json()
+
+# Quizlet OAuth2
+def get_oauth2_token():
+    head = {'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': 'Basic UG53cHl0cnNxVjpqcXNmNU1ieHdGNXZ4N3laQ1dyQUVE'}
+
+    # build POST request body
+    req_body = {'grant_type': 'authorization_code',
+                'code': 'jnBhz3BR7e5V8PuK7MmdF7F5Tv9xXuNwUezyjdxH',
+                'redirect_uri': config.qredirect_uri,
+                'client_id': config.qclient_id,
+                'client_secret': config.qclient_secret}
+    res = requests.post(token_url, headers=head, data=req_body, verify=True)
+    
+    print res.json()
+    return 'Bearer ' + res.json()['access_token']
+
+def getQuizletUser():
+    head = {'Content-Type': 'application/json',
+            'Authorization': get_oauth2_token()}
+>>>>>>> quizletAPI
 
     # # build search query parameters
     # qp = {'latitude': latitude,}
@@ -110,8 +151,13 @@ def getQuizlet():
     return res.json()
 
 # print get_code()
+<<<<<<< f89f34fbb040bb36975f5ec6a5e1dbcee7e560d8
 # print get_oauth2_token()
 # print getQuizlet()
+=======
+print get_oauth2_token()
+# print getQuizletUser()
+>>>>>>> quizletAPI
 
 
 # Quizlet OAuth2Session
@@ -129,4 +175,19 @@ def getQuizlet():
 
 # # Fetch a protected resource, i.e. user profile
 # req = quizlet.get('https://api.quizlet.com/2.0/users/mlhhack?whitespace=1')
+<<<<<<< f89f34fbb040bb36975f5ec6a5e1dbcee7e560d8
 # print req.content
+=======
+# print req.content
+
+
+# URL Request
+# import urllib2
+# request = urllib2.urlopen('https://api.quizlet.com/2.0/sets/415?whitespace=1')
+# json_string = request.read()
+# parsed_json = json.loads(json_string)
+# str_parsed_json = json.dump(json_string)
+# location = parsed_json['current_observation']['display_location']['full']
+# print "%s" %(location)
+
+>>>>>>> quizletAPI
