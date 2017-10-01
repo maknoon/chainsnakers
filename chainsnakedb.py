@@ -190,7 +190,11 @@ class ChainsDb(object):
                             '%s'""" % (word)
         cursor.execute(k_select_query)
         data = cursor.fetchone()
-        k_id = data[0]
+        try:
+            k_id = data[0]
+        except:
+            db.close()
+            return {}
 
         q_select_query = """SELECT CARD.C_QUESTION FROM CARD 
                              INNER JOIN C_KW_RELATIONSHIPS
@@ -198,7 +202,7 @@ class ChainsDb(object):
                              INNER JOIN KEY_WORDS
                              ON C_KW_RELATIONSHIPS.K_ID = KEY_WORDS.K_ID
                              WHERE C_KW_RELATIONSHIPS.WEIGHT > 0.7 AND C_KW_RELATIONSHIPS.K_ID = %i
-                             ORDER BY C_KW_RELATIONSHIPS.WEIGHT DESC;""" % (k_id)
+                             ORDER BY C_KW_RELATIONSHIPS.WEIGHT DESC LIMIT 3;""" % (k_id)
 
         cursor.execute(q_select_query)
         data = cursor.fetchall()
@@ -207,11 +211,17 @@ class ChainsDb(object):
             if data[0] is not None: questions = data
         except:
             questions = {}
+
+        i = 0
+        array = []
+        while i < len(questions):
+            array.append(questions[i][0])
+            i += 1
         
         # disconnect from server
         db.close()
 
-        return questions
+        return {"questions":array}
 
     def get_keyword_given_question(self, question):
         # Open database connection
@@ -225,7 +235,11 @@ class ChainsDb(object):
                             '%s'""" % (question)
         cursor.execute(q_select_query)
         data = cursor.fetchone()
-        c_id = data[0]
+        try:
+            c_id = data[0]
+        except:
+            db.close()
+            return {}
 
         k_select_query = """SELECT KEY_WORDS.K_NAME FROM KEY_WORDS 
                              INNER JOIN C_KW_RELATIONSHIPS
@@ -233,7 +247,7 @@ class ChainsDb(object):
                              INNER JOIN CARD
                              ON C_KW_RELATIONSHIPS.C_ID = CARD.C_ID
                              WHERE C_KW_RELATIONSHIPS.WEIGHT > 0.7 AND C_KW_RELATIONSHIPS.C_ID = %i
-                             ORDER BY C_KW_RELATIONSHIPS.WEIGHT DESC;""" % (c_id)
+                             ORDER BY C_KW_RELATIONSHIPS.WEIGHT DESC LIMIT 3;""" % (c_id)
 
         cursor.execute(k_select_query)
         data = cursor.fetchall()
@@ -243,10 +257,15 @@ class ChainsDb(object):
         except:
             words = {}
         
+        i = 0
+        array = []
+        while i < len(words):
+            array.append(words[i][0])
+            i += 1
+
         # disconnect from server
         db.close()
-
-        return words
+        return {"words":array}
 
 chainsDb = ChainsDb()
 chainsDb.reset_db()
@@ -259,6 +278,6 @@ chainsDb.insert_to_card("How sexy are you?", "very very very sexy")
 chainsDb.insert_to_c_kw("How old is trent really?", "cell barrier", 0.891)
 chainsDb.insert_to_c_kw("How sexy are you?", "cell barrier", 0.701)
 chainsDb.insert_to_c_kw("How old is trent really?", "woofers", 0.791)
-chainsDb.get_questions_given_keyword("cell barrier")
-chainsDb.get_keyword_given_question("How old is trent really?")
+print chainsDb.get_questions_given_keyword("cell barrier")
+print chainsDb.get_keyword_given_question("How old is trent really?")
 print "meow"
