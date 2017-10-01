@@ -261,7 +261,7 @@ class ChainsDb(object):
         i = 0
         array = []
         while i < len(questions):
-            temp = {"question":questions[i][0], "answer":questions[i][1]}
+            temp = {"definition":questions[i][0], "term":questions[i][1]}
             array.append(temp)
             i += 1
 
