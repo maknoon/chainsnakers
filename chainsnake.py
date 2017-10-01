@@ -63,6 +63,12 @@ def text_searchterm():
 
 
 
+@app.route('/setup')
+def fetch():
+    set_to_fetch = request.args.get('fetch')
+
+    return json.dumps({"message": "fetched the {} set!".format(set_to_fetch)},indent=2)
+
 @app.route('/hello/<u_name>')
 def address(u_name):
     return 'hey {}! did you know that harris is gay'.format(u_name)
