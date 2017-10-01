@@ -2,6 +2,7 @@
 
 import pymysql as psql
 import config
+import random
 
 class ChainsDb(object):
 
@@ -233,7 +234,7 @@ class ChainsDb(object):
 
         next_k_select_query = """SELECT K_ID FROM KEY_WORDS
                              WHERE K_NAME =
-                            '%s'""" % (key_array[0])
+                            '%s'""" % (key_array[random.randint(0,2)])
         cursor.execute(next_k_select_query)
         data = cursor.fetchone()
         try:
@@ -279,6 +280,9 @@ chainsDb.insert_to_topics("Chinese History")
 # Insert Key words
 chainsDb.insert_to_key_word("China")
 chainsDb.insert_to_key_word("Chinese Government")
+chainsDb.insert_to_key_word("Horses")
+chainsDb.insert_to_key_word("Curtural Revolution")
+chainsDb.insert_to_key_word("Warfare")
 
 # Relation between key word and topic
 chainsDb.insert_to_relationships("China", "Chinese History", 0.92)
@@ -286,9 +290,24 @@ chainsDb.insert_to_relationships("China", "Chinese History", 0.92)
 # Insert Questions
 chainsDb.insert_to_card("The chairman of China", "Mao")
 chainsDb.insert_to_card("The president of China", "Xi Jinping")
+chainsDb.insert_to_card("Master strategist from epic","Zhu Ge Liang")
+chainsDb.insert_to_card("Used to defend against mongols", "Great Wall of China")
+
 
 # Insert relationships between key words and questions
+chainsDb.insert_to_c_kw("Used to defend against mongols", "Warfare", 0.999)
+chainsDb.insert_to_c_kw("Used to defend against mongols", "Horses", 0.781)
+chainsDb.insert_to_c_kw("Used to defend against mongols", "China", 0.649)
+chainsDb.insert_to_c_kw("Used to defend against mongols", "Chinese Government", 0.539)
+chainsDb.insert_to_c_kw("Master strategist from epic", "Warfare", 0.931)
+chainsDb.insert_to_c_kw("Master strategist from epic", "Horses", 0.75)
+chainsDb.insert_to_c_kw("Master strategist from epic", "China", 0.901)
+chainsDb.insert_to_c_kw("Master strategist from epic", "Chinese Government", 0.515)
+chainsDb.insert_to_c_kw("Master strategist from epic", "Curtural Revolution", 0.501)
 chainsDb.insert_to_c_kw("The chairman of China", "China", 0.800)
+chainsDb.insert_to_c_kw("The chairman of China", "Chinese Government", 0.923)
+chainsDb.insert_to_c_kw("The chairman of China", "Curtural Revolution", 0.723)
 chainsDb.insert_to_c_kw("The president of China", "China", 0.701)
+chainsDb.insert_to_c_kw("The president of China", "Curtural Revolution", 0.631)
 chainsDb.insert_to_c_kw("The president of China", "Chinese Government", 0.791)
 print "meow"
