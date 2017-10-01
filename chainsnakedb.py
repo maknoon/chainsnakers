@@ -133,11 +133,6 @@ class ChainsDb(object):
         db.close()
 
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 6acb29c01fab5dd2b874b8f96a6b64c139c0cae8
 chainsDb = ChainsDb()
 chainsDb.reset_db()
 chainsDb.insert_to_topics("SOLAR SYSTEMS")
