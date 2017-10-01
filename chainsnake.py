@@ -14,15 +14,26 @@ sem = NaturalLanguageUnderstandingV1(
 
 @app.route('/test_watson')
 def test_watson():
-    response = sem.analyze(
-        url="https://quizlet.com/229277915/biology-flash-cards/",
+    question = sem.analyze(
+        text="",
         features=[
-            Features.SemanticRoles(
+            Features.Keywords(
             # Semantic Roles options
             )
         ]
     )
-    response_dict = json.dumps(response, indent=2)
+
+    answer = sem.analyze(
+        text="",
+        features=[
+            Features.Keywords(
+            # Semantic Roles options
+            )
+        ]
+    )
+    print(json.dumps(question, indent=2))
+    print(json.dumps(answer, indent=2))
+
 
 
 
