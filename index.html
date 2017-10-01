@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Quiznet</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="Bootstrap/bootstrap.min.css" rel="stylesheet">
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script src="js/script.js"> </script>
+
+    <link rel="icon" href="hashtag.ico">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <h3></h3>
+            </div>
+        </div>
+    </nav>
+
+
+<div style="display:block;" class="introduction">
+    <h3>Quiznet</h3>
+    <hr>
+    <p>
+        Hello <font color="#800080"><b>world</b></font>~
+    </p>
+
+    </p>
+</div>
+
+<div class="enter_hashtag">
+    <form name="search" id="search_form">
+        <input name="tag" id="hashtag" type="text">
+
+        <input type="button" name="submit" value="Submit" onclick="useHashtag();">
+
+        </form>
+        <h1 id="showHash"></h1>
+    </div>
+
+    <hr>
+
+ <div class="results" id="results">
+
+     <h2 style="font-variant:small-caps;">Results</h2>
+
+     <table class="center">
+         <tr>
+             <th>EMOTION</th>
+             <th>SCORE (%)</th>
+         </tr>
+         <tr>
+             <td>ANGER</td>
+             <td><p id="anger"></p></td>
+         </tr>
+         <tr>
+             <td>CONTEMPT</td>
+             <td><p id="contempt"></p></td>
+         </tr>
+         <tr>
+             <td>DISGUST</td>
+             <td> <p id="disgust"></p></td>
+         </tr>
+         <tr>
+             <td>FEAR</td>
+             <td><p id="fear"></p></td>
+         </tr>
+         <tr>
+             <td>HAPPINESS</td>
+             <td><p id="happiness"></p></td>
+         </tr>
+         <tr>
+             <td>NEUTRAL</td>
+             <td><p id="neutral"></p></td>
+         </tr>
+         <tr>
+             <td>SADNESS</td>
+             <td><p id="sadness"></p></td>
+         </tr>
+         <tr>
+             <td>SURPRISE</td>
+             <td><p id="surprise"></p></td>
+         </tr>
+     </table>
+
+     <div id="dominant_emotion">
+
+         <h3 id="highest"></h3>
+
+     </div>
+
+     <!-- Results-dependant divs, just for funs -->
+
+     <div id="anger_div">
+        <p>Wow - this hashtag is angry! </p>
+        <img src="images/angry.jpg" style="width:350px;height:250px;">
+     </div>
+     <div id="contempt_div">
+         <p>This hashtag doesn't like what it sees... hmph!</p>
+         <img src="images/contempt.jpg" style="width:350px;height:250px;">
+     </div>
+     <div id="disgust_div">
+         <p>Yuck. This hashtag seems to be pretty disgusted!</p>
+         <img src="images/disgust.gif" style="width:350px;height:250px;">
+     </div>
+     <div id="fear_div">
+         <p>Spooky! This hashtag is primariy associated with fear!</p>
+         <img src="images/fear.gif" style="width:350px;height:250px;">
+     </div>
+     <div id="happiness_div">
+         <p>How lovely! Individuals in these photos are primarily happy. </p>
+         <img src="images/happy.gif" style="width:350px;height:250px;">
+     </div>
+     <div id="neutral_div">
+         <p>Well, that's kind of boring. Most people in these photos are feeling pretty neutral.</p>
+         <img src="images/neutral.jpg" style="width:350px;height:250px;">
+     </div>
+     <div id="sadness_div">
+         <p>Oh no, these aren't happy photos at all! What a sad hashtag. </p>
+         <img src="images/sad.jpg" style="width:350px;height:250px;">
+     </div>
+     <div id="surprise_div">
+         <p>Shocking! This hashtag is mostly associated with surprise. </p>
+        <img src="images/surprise.gif" style="width:350px;height:250px;">
+     </div>
+
+ </div>
+
+<div class="container" id="footer">
+    <footer>
+        <hr>
+        <p>Team <b>Chainsnakers</b> - <i>@EduHacks</i></p>
+    </footer>
+</div>
+
+</body>
+</html>
