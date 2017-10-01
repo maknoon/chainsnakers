@@ -1,6 +1,6 @@
 #!~/usr/bin/python3
 from flask import Flask
-import pymysql
+#import pymysql
 import json
 import config
 from watson_developer_cloud import NaturalLanguageUnderstandingV1
@@ -14,11 +14,22 @@ sem = NaturalLanguageUnderstandingV1(
 
 @app.route('/test_watson')
 def test_watson():
-	return 'connected'
+    response = sem.analyze(
+        url="https://quizlet.com/229277915/biology-flash-cards/",
+        features=[
+            Features.SemanticRoles(
+            # Semantic Roles options
+            )
+        ]
+    )
+    response_dict = json.dumps(response, indent=2)
+
+
+
 
 @app.route('/hello/<u_name>')
 def address(u_name):
-	return 'hey {}! did you know that harris is gay'.format(u_name)
+    return 'hey {}! did you know that harris is gay'.format(u_name)
 
 @app.route('/')
 def index():
