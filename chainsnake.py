@@ -1,5 +1,5 @@
 #!~/usr/bin/python3
-from flask import Flask, request
+from flask import Flask, request, render_template
 import pymysql
 import json
 import chainsnakedb
@@ -35,7 +35,7 @@ def word():
 
 @app.route('/')
 def index():
-    return "ssssssssss"
+    return render_template('index.html')
 
 if __name__ == '__main__':
     app.run()
