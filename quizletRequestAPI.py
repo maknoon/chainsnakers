@@ -32,8 +32,10 @@ def run():
     else:
         print json.dumps(parsedJsonSearch, indent=2)
         print "\n-----------\n"
+        # # DB reset & repopulate
         # chainsDb.reset_db()
         # chainsDb.insert_to_topics(q)
+        # follow-up
         retrieveIdTc(parsedJsonSearch)
 
 def retrieveIdTc(parsedJson):
@@ -78,10 +80,12 @@ def fetchSet(ID):
 def retrieveTD(parsedJson):
 
     parsedJsonSet = parsedJson
-    print "Retieving Term & Definition pairs of resulting Terms in Set\n"
+    print "Retrieving Term & Definition pairs of resulting Terms in Set\n"
     resultTerms = {}
     for numTerms in parsedJsonSet["terms"]:
         resultTerms[numTerms["term"]] = numTerms["definition"]
+        # # populate terms & definitions
+        # chainsDb.insert_to_card(resultTerms[numTerms["term"]], numTerms["definition"])
     print resultTerms
     print "\n-----------\n"
     watsonNLUkw(resultTerms)
@@ -99,7 +103,7 @@ def watsonNLUkw(resultTD):
     # print jsonKW
     print parsedJsonKW
     print "\n-----------\n"
-    # print parsedJsonKW.keys()
+    # for k in parsedJsonKW.keys(): print k
 
 
 # chainsDb = cdb.ChainsDb()
