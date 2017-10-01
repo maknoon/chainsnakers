@@ -201,7 +201,7 @@ class ChainsDb(object):
                              ON KEY_WORDS.K_ID = C_KW_RELATIONSHIPS.K_ID
                              INNER JOIN CARD
                              ON C_KW_RELATIONSHIPS.C_ID = CARD.C_ID
-                             WHERE C_KW_RELATIONSHIPS.WEIGHT > 0.7 AND C_KW_RELATIONSHIPS.C_ID = %i
+                             WHERE C_KW_RELATIONSHIPS.WEIGHT > 0.5 AND C_KW_RELATIONSHIPS.C_ID = %i
                              ORDER BY C_KW_RELATIONSHIPS.WEIGHT DESC LIMIT 3;""" % (c_id)
 
         cursor.execute(k_select_query)
@@ -247,7 +247,7 @@ class ChainsDb(object):
                              ON CARD.C_ID = C_KW_RELATIONSHIPS.C_ID
                              INNER JOIN KEY_WORDS
                              ON C_KW_RELATIONSHIPS.K_ID = KEY_WORDS.K_ID
-                             WHERE C_KW_RELATIONSHIPS.WEIGHT > 0.7 AND C_KW_RELATIONSHIPS.K_ID = %i
+                             WHERE C_KW_RELATIONSHIPS.WEIGHT > 0.5 AND C_KW_RELATIONSHIPS.K_ID = %i
                              ORDER BY C_KW_RELATIONSHIPS.WEIGHT DESC LIMIT 3;""" % (k_id)
 
         cursor.execute(next_q_select_query)
@@ -274,14 +274,14 @@ chainsDb = ChainsDb()
 chainsDb.reset_db()
 
 # Insert topic
-chainsDb.insert_to_topics("China")
+chainsDb.insert_to_topics("Chinese History")
 
 # Insert Key words
 chainsDb.insert_to_key_word("China")
 chainsDb.insert_to_key_word("Chinese Government")
 
 # Relation between key word and topic
-chainsDb.insert_to_relationships("China", "China", 0.92)
+chainsDb.insert_to_relationships("China", "Chinese History", 0.92)
 
 # Insert Questions
 chainsDb.insert_to_card("The chairman of China", "Mao")
