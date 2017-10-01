@@ -178,51 +178,6 @@ class ChainsDb(object):
         # disconnect from server
         db.close()
 
-    def get_questions_given_keyword(self, word):
-        # Open database connection
-        db = psql.connect(config.host,config.dbusr,config.dbpwd,"chains" )
-
-        # prepare a cursor object using cursor() method
-        cursor = db.cursor()
-
-        k_select_query = """SELECT K_ID FROM KEY_WORDS
-                             WHERE K_NAME =
-                            '%s'""" % (word)
-        cursor.execute(k_select_query)
-        data = cursor.fetchone()
-        try:
-            k_id = data[0]
-        except:
-            db.close()
-            return {}
-
-        q_select_query = """SELECT CARD.C_QUESTION FROM CARD 
-                             INNER JOIN C_KW_RELATIONSHIPS
-                             ON CARD.C_ID = C_KW_RELATIONSHIPS.C_ID
-                             INNER JOIN KEY_WORDS
-                             ON C_KW_RELATIONSHIPS.K_ID = KEY_WORDS.K_ID
-                             WHERE C_KW_RELATIONSHIPS.WEIGHT > 0.7 AND C_KW_RELATIONSHIPS.K_ID = %i
-                             ORDER BY C_KW_RELATIONSHIPS.WEIGHT DESC LIMIT 3;""" % (k_id)
-
-        cursor.execute(q_select_query)
-        data = cursor.fetchall()
-
-        try:
-            if data[0] is not None: questions = data
-        except:
-            questions = {}
-
-        i = 0
-        array = []
-        while i < len(questions):
-            array.append(questions[i][0])
-            i += 1
-        
-        # disconnect from server
-        db.close()
-
-        return {"questions":array}
-
     def get_keyword_given_question(self, question):
         # Open database connection
         db = psql.connect(config.host,config.dbusr,config.dbpwd,"chains" )
@@ -265,19 +220,75 @@ class ChainsDb(object):
 
         # disconnect from server
         db.close()
-        return {"words":array}
+        return array
+
+    def get_questions_given_question(self, question):
+        # Open database connection
+        db = psql.connect(config.host,config.dbusr,config.dbpwd,"chains" )
+
+        # prepare a cursor object using cursor() method
+        cursor = db.cursor()
+        ques = question
+        key_array = self.get_keyword_given_question(ques)
+
+        next_k_select_query = """SELECT K_ID FROM KEY_WORDS
+                             WHERE K_NAME =
+                            '%s'""" % (key_array[0])
+        cursor.execute(next_k_select_query)
+        data = cursor.fetchone()
+        try:
+            k_id = data[0]
+        except:
+            db.close()
+            return {}
+
+        next_q_select_query = """SELECT CARD.C_QUESTION, CARD.C_ANSWER FROM CARD 
+                             INNER JOIN C_KW_RELATIONSHIPS
+                             ON CARD.C_ID = C_KW_RELATIONSHIPS.C_ID
+                             INNER JOIN KEY_WORDS
+                             ON C_KW_RELATIONSHIPS.K_ID = KEY_WORDS.K_ID
+                             WHERE C_KW_RELATIONSHIPS.WEIGHT > 0.7 AND C_KW_RELATIONSHIPS.K_ID = %i
+                             ORDER BY C_KW_RELATIONSHIPS.WEIGHT DESC LIMIT 3;""" % (k_id)
+
+        cursor.execute(next_q_select_query)
+        data = cursor.fetchall()
+
+        try:
+            if data[0] is not None: questions = data
+        except:
+            questions = {}        
+
+        i = 0
+        array = []
+        while i < len(questions):
+            temp = {"definition":questions[i][0], "term":questions[i][1]}
+            array.append(temp)
+            i += 1
+
+        # disconnect from server
+        db.close()
+
+        return {"results":array}
 
 chainsDb = ChainsDb()
 chainsDb.reset_db()
-chainsDb.insert_to_topics("SOLAR SYSTEMS")
-chainsDb.insert_to_key_word("cell barrier")
-chainsDb.insert_to_key_word("woofers")
-chainsDb.insert_to_relationships("cell barrier", "SOLAR SYSTEMS", 0.22)
-chainsDb.insert_to_card("How old is trent really?", "probably like forty years old")
-chainsDb.insert_to_card("How sexy are you?", "very very very sexy")
-chainsDb.insert_to_c_kw("How old is trent really?", "cell barrier", 0.891)
-chainsDb.insert_to_c_kw("How sexy are you?", "cell barrier", 0.701)
-chainsDb.insert_to_c_kw("How old is trent really?", "woofers", 0.791)
-print chainsDb.get_questions_given_keyword("cell barrier")
-print chainsDb.get_keyword_given_question("How old is trent really?")
+
+# Insert topic
+chainsDb.insert_to_topics("China")
+
+# Insert Key words
+chainsDb.insert_to_key_word("China")
+chainsDb.insert_to_key_word("Chinese Government")
+
+# Relation between key word and topic
+chainsDb.insert_to_relationships("China", "China", 0.92)
+
+# Insert Questions
+chainsDb.insert_to_card("The chairman of China", "Mao")
+chainsDb.insert_to_card("The president of China", "Xi Jinping")
+
+# Insert relationships between key words and questions
+chainsDb.insert_to_c_kw("The chairman of China", "China", 0.800)
+chainsDb.insert_to_c_kw("The president of China", "China", 0.701)
+chainsDb.insert_to_c_kw("The president of China", "Chinese Government", 0.791)
 print "meow"
