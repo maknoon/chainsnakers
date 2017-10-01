@@ -2,9 +2,19 @@
 from flask import Flask, request
 import pymysql
 import json
-import chainsnakedb
+import config
+from watson_developer_cloud import NaturalLanguageUnderstandingV1
+import watson_developer_cloud.natural_language_understanding.features.v1 as Features
 
 app = Flask(__name__)
+sem = NaturalLanguageUnderstandingV1(
+  username=config.watson_u,
+  password=config.watson_p,
+  version=config.watson_d)
+
+@app.route('/test_watson')
+def test_watson():
+	return 'connected'
 
 @app.route('/setup')
 def fetch():
