@@ -8,7 +8,7 @@ import requests
 import operator
 
 import watsonNLU
-# import chainsnakedb as cdb
+import chainsnakedb as cdb
 
 
 # --- URL Requests ---
@@ -33,8 +33,8 @@ def run():
         print json.dumps(parsedJsonSearch, indent=2)
         print "\n-----------\n"
         # # DB reset & repopulate
-        # chainsDb.reset_db()
-        # chainsDb.insert_to_topics(q)
+        chainsDb.reset_db()
+        chainsDb.insert_to_topics(q)
         # follow-up
         retrieveIdTc(parsedJsonSearch)
 
@@ -85,7 +85,7 @@ def retrieveTD(parsedJson):
     for numTerms in parsedJsonSet["terms"]:
         resultTerms[numTerms["term"]] = numTerms["definition"]
         # # populate terms & definitions
-        # chainsDb.insert_to_card(resultTerms[numTerms["term"]], numTerms["definition"])
+        chainsDb.insert_to_card(resultTerms[numTerms["term"]], numTerms["definition"])
     print resultTerms
     print "\n-----------\n"
     watsonNLUkw(resultTerms)
@@ -106,7 +106,7 @@ def watsonNLUkw(resultTD):
     # for k in parsedJsonKW.keys(): print k
 
 
-# chainsDb = cdb.ChainsDb()
+chainsDb = cdb.ChainsDb()
 run()
 
 

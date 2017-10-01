@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|Roboto');
+/*top bar, for aesthetics and not navigation, because we aren't going anywhere*/
+* {
+	font-family: 'Open Sans';
+	font-size: 18px;
+	letter-spacing: 1px;
+	color: #383736;
+}
+.navbar-default {
+	display: block;
+	background-image:url("pineapple.png");
+	border-bottom: double;
+	border-bottom-width: 3px;
+	position: relative;
+	color: #fff;
+	box-shadow: 0px 7px 5px #82607f;
+}
+
+.introduction p {
+    display: block;
+    margin-left: 30px;
+    margin-right: 30px;
+    padding: 5px;
+    text-align: center;
+}
+
+.introduction h3 {
+    display: block;
+    padding: 10px;
+    text-align: center;
+	font-family: 'Roboto';
+	font-size: 35px;
+	letter-spacing: 2px;
+	font-variant: small-caps;
+	margin-bottom: 30px;
+    padding-top: 26px;
+}
+
+.enter_hashtag {
+    display: block;
+    padding:20px;
+    text-align: center;
+}
+.enter_hashtag h1 {
+    text-align: center;
+}
+
+.results {
+    display: none;
+    padding:20px;
+	margin-bottom:30px;
+	text-align: center;
+}
+
+.results .dominant_emotion{
+    display: block;
+    padding:30px;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 68%;
+}
+table.center {
+    margin-left: auto;
+    margin-right: auto;
+}
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #ffccff;
+}
+
+h1 {
+    display: block;
+    padding: 20px;
+    text-align: left;
+    color: #ffccff;
+}
+
+hr {
+	height: 3px;
+	width: 65%;
+	background-color: #cbcccf;
+	border: none;
+}
+#hashtag {
+	background: white url(images/hashtag.png) left no-repeat;
+	padding-left: 22px;
+	background-size: 20px 18px;
+	font-weight: bold;
+}
+input[type=text] {
+	width: 300px;
+	border:2px solid rgba(65,75,86,0.3);
+	border-radius:3px;
+}
+footer {
+    text-align: center;
+}
+h2 {
+    padding-bottom: 30px;
+}
