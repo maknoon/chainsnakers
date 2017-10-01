@@ -1,4 +1,5 @@
 #!~/usr/bin/python3
+<<<<<<< HEAD
 <<<<<<< 5febe1714bf0516a4c77466c7995cda9b660acef
 <<<<<<< 6299b34544663d4e73d656e7927cfecaf93be8cd
 from flask import Flask
@@ -17,6 +18,11 @@ from flask import Flask, request
 import pymysql
 import json
 >>>>>>> lambda connected to API
+=======
+from flask import Flask, request
+import pymysql
+import json
+>>>>>>> 6acb29c01fab5dd2b874b8f96a6b64c139c0cae8
 
 app = Flask(__name__)
 sem = NaturalLanguageUnderstandingV1(
@@ -74,6 +80,12 @@ def text_searchterm():
     return(keyword)
 
 
+
+@app.route('/setup')
+def fetch():
+    set_to_fetch = request.args.get('fetch')
+
+    return json.dumps({"message": "fetched the {} set!".format(set_to_fetch)},indent=2)
 
 @app.route('/setup')
 def fetch():
