@@ -1,4 +1,5 @@
 #!~/usr/bin/python3
+<<<<<<< 5febe1714bf0516a4c77466c7995cda9b660acef
 <<<<<<< 6299b34544663d4e73d656e7927cfecaf93be8cd
 from flask import Flask
 #import pymysql
@@ -6,6 +7,11 @@ import json
 import config
 from watson_developer_cloud import NaturalLanguageUnderstandingV1
 import watson_developer_cloud.natural_language_understanding.features.v1 as Features
+=======
+from flask import Flask, request
+import pymysql
+import json
+>>>>>>> lambda connected to API
 =======
 from flask import Flask, request
 import pymysql
@@ -68,6 +74,12 @@ def text_searchterm():
     return(keyword)
 
 
+
+@app.route('/setup')
+def fetch():
+    set_to_fetch = request.args.get('fetch')
+
+    return json.dumps({"message": "fetched the {} set!".format(set_to_fetch)},indent=2)
 
 @app.route('/setup')
 def fetch():
