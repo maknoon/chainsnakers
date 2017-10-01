@@ -267,6 +267,11 @@ class ChainsDb(object):
         db.close()
         return {"words":array}
 
+<<<<<<< a9f935e27c04ce72ee12bc5853d9c8d31cc1ea6d
+=======
+
+
+>>>>>>> added some db query functions
 chainsDb = ChainsDb()
 chainsDb.reset_db()
 chainsDb.insert_to_topics("SOLAR SYSTEMS")
