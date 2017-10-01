@@ -7,58 +7,103 @@ import requests
 # from requests_oauthlib import OAuth2Session
 import operator
 
+import watsonNLU
+# import chainsnakedb as cdb
+
 
 # --- URL Requests ---
+def run():
 
-# Search
-searchURL = 'https://api.quizlet.com/2.0/search/sets?client_id='
-q = raw_input("Topic: ")
-# q = "spanish"
-term = raw_input("Term: ")
-# term = "silla"
+    # Search
+    searchURL = 'https://api.quizlet.com/2.0/search/sets?client_id='
+    q = raw_input("Topic: ")
+    # q = "spanish"
+    while (q == ""):
+        q = raw_input("Try again: ")
+    term = raw_input("Term (not required): ")
+    # term = "silla"
 
-print "Searching Sets by matching subject/topic"
-requestSearch = urllib2.urlopen(searchURL+config.qclient_id+"&q=%s&term=%s"%(q, term))
-jsonStringSearch = requestSearch.read()
-parsedJsonSearch = json.loads(jsonStringSearch)
-# str_parsed_json = json.dump(json_string)
-# location = parsed_json['current_observation']['display_location']['full']
-print parsedJsonSearch
-print "\n-----------\n"
+    print "Searching Sets by matching subject/topic"
+    requestSearch = urllib2.urlopen(searchURL+config.qclient_id+"&q=%s&term=%s"%(q, term))
+    jsonStringSearch = requestSearch.read()
+    parsedJsonSearch = json.loads(jsonStringSearch)
+    if (parsedJsonSearch["total_results"] == 0):
+        print "No results found"
+    else:
+        print json.dumps(parsedJsonSearch, indent=2)
+        print "\n-----------\n"
+        # chainsDb.reset_db()
+        # chainsDb.insert_to_topics(q)
+        retrieveIdTc(parsedJsonSearch)
 
-print "Retieving ID & Term-count pairs of resulting Sets\n"
-resultSetsIdTc = {}
-for numSet in parsedJsonSearch["sets"]:
-    resultSetsIdTc[numSet["id"]] = numSet["term_count"]
-print resultSetsIdTc
-print "\n-----------\n"
+def retrieveIdTc(parsedJson):
 
-print "Sorting dictionary by Term-count\n"
-sortedResultSet = sorted(resultSetsIdTc.items(), key=operator.itemgetter(1))
-print sortedResultSet
-print "\n-----------\n"
+    parsedJsonSearch = parsedJson
+    print "Retieving ID & Term-count pairs of resulting Sets\n"
+    resultSetsIdTc = {}
+    for numSet in parsedJsonSearch["sets"]:
+        resultSetsIdTc[numSet["id"]] = numSet["term_count"]
+    print resultSetsIdTc
+    print "\n-----------\n"
 
-# Set
-print "Retrieving SetID of Set with lowest Term-count\n"
-setID = sortedResultSet[0][0]
-print setID
-# setID = "106176371"
-setURL = 'https://api.quizlet.com/2.0/sets/%s?client_id='%(setID)
-print "\n-----------\n"
+    print "Sorting dictionary by Term-count\n"
+    sortedResultSet = sorted(resultSetsIdTc.items(), key=operator.itemgetter(1))
+    print sortedResultSet
+    print "\n-----------\n"
 
-print "Retrieving Set\n"
-requestSet = urllib2.urlopen(setURL+config.qclient_id)
-jsonStringSet = requestSet.read()
-parsedJsonSet = json.loads(jsonStringSet)
-print parsedJsonSet
-print "\n-----------\n"
+    print "Retrieving SetID of Set with lowest Term-count\n"
+    setID = sortedResultSet[0][0]
+    print setID
+    # setID = "106176371"
+    fetchSet(setID)
 
-print "Retieving Term & Definition pairs of resulting Terms in Set\n"
-resultTerms = {}
-for numTerms in parsedJsonSet["terms"]:
-    resultTerms[numTerms["term"]] = numTerms["definition"]
-print resultTerms
-print "\n-----------\n"
+def fetchSet(ID):
+
+    setID = ID
+    # Set
+    setURL = 'https://api.quizlet.com/2.0/sets/%s?client_id='%(setID)
+    print "\n-----------\n"
+
+    print "Retrieving Set\n"
+    requestSet = urllib2.urlopen(setURL+config.qclient_id)
+    jsonStringSet = requestSet.read()
+    parsedJsonSet = json.loads(jsonStringSet)
+    if (parsedJsonSet == ""):
+        print "Set not found"
+    else:
+        print json.dumps(parsedJsonSet, indent=2)
+        print "\n-----------\n"
+        retrieveTD(parsedJsonSet)
+
+def retrieveTD(parsedJson):
+
+    parsedJsonSet = parsedJson
+    print "Retieving Term & Definition pairs of resulting Terms in Set\n"
+    resultTerms = {}
+    for numTerms in parsedJsonSet["terms"]:
+        resultTerms[numTerms["term"]] = numTerms["definition"]
+    print resultTerms
+    print "\n-----------\n"
+    watsonNLUkw(resultTerms)
+
+def watsonNLUkw(resultTD):
+
+    resultTerms = resultTD
+    # --- Watson NLU: Q&A for Keyword(s) ---
+    strJsonKW = ""
+    for keys, values in resultTerms.iteritems():
+        # jsonKW += json.dumps(watsonNLU.test_watson(keys, values), indent=2)
+        strJsonKW += watsonNLU.test_watson(keys, values)
+    jsonKW = json.dumps(strJsonKW)
+    parsedJsonKW = json.loads(jsonKW)
+    # print jsonKW
+    print parsedJsonKW
+    print "\n-----------\n"
+    # print parsedJsonKW.keys()
+
+
+# chainsDb = cdb.ChainsDb()
+run()
 
 
 # --- OAuth --------------------------------------

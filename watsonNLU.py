@@ -13,34 +13,37 @@ sem = NaturalLanguageUnderstandingV1(
   version=config.watson_d)
 # return answer and question keywords
 @app.route('/test_watson')
-def test_watson():
+def test_watson(t, t2):
 
-    text = "An organization of workers that tries to improve working conditions, wages, and benefits for its members"
+    # text = "An organization of workers that tries to improve working conditions, wages, and benefits for its members"
+    text = t
     if len(text) < 15:
         answer = text
     else:
         answer = sem.analyze(
-            text="An organization of workers that tries to improve working conditions, wages, and benefits for its members",
+            # text="An organization of workers that tries to improve working conditions, wages, and benefits for its members",
+            text = t,
             features=[
                 Features.Keywords(
                 # Semantic Roles options
                 )
             ]
         )
-    text="Social Justice"
-    if len(text) < 15:
-        question = text
+    # text2 ="Social Justice"
+    text2 = t2
+    if len(text2) < 15:
+        question = text2
     else:
         question = sem.analyze(
-            text="Social Justice",
+            # text="Social Justice",
+            text = t2,
             features=[
                 Features.Keywords(
                 # Semantic Roles options
                 )
             ]
         )
-    return(json.dumps(answer, indent=2))
-    return(json.dumps(question, indent=2))
+    return(json.dumps(answer, indent=2))+(json.dumps(question, indent=2))
 #return single search term given alexa question
 @app.route('/test_searchterm')
 def text_searchterm():
@@ -62,12 +65,6 @@ def text_searchterm():
     return(keyword)
 
 
-
-@app.route('/setup')
-def fetch():
-    set_to_fetch = request.args.get('fetch')
-
-    return json.dumps({"message": "fetched the {} set!".format(set_to_fetch)},indent=2)
 
 @app.route('/setup')
 def fetch():
