@@ -1,7 +1,6 @@
 #!~/usr/bin/python
 
 import config
-<<<<<<< f89f34fbb040bb36975f5ec6a5e1dbcee7e560d8
 import urllib2
 import json
 import requests
