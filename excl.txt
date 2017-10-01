@@ -4,3 +4,4 @@ config.py
 .gitignore
 __pycache__/
 .git/
+lambda/

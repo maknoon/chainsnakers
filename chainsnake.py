@@ -1,8 +1,16 @@
 #!~/usr/bin/python3
-from flask import Flask
+from flask import Flask, request
+import json
 import pymysql
 
 app = Flask(__name__)
+
+# ENDPOINT TO FETCH AND POPULATE DB WITH QUIZLET CARDS
+@app.route('/setup')
+def fetch():
+	set_to_fetch = request.args.get('fetch')
+
+	return json.dumps({"message": "fetched the {} set!".format(set_to_fetch)},indent=2)
 
 @app.route('/hello/<u_name>')
 def address(u_name):
